@@ -1,33 +1,58 @@
 import os
 import re
+import sys
 from dotenv import load_dotenv
 from pyrogram import filters
 
 load_dotenv()
 
+# ===========================================
+# ❌ FORK/CLONE PROTECTION - Ye mat badalna
+# ===========================================
+CURRENT_REPO = "https://github.com/sharmanikita0030-aj/Ajnabi-music"
+ALLOWED_REPOS = [
+    "https://github.com/sharmanikita0030-aj/Ajnabi-music",
+    "https://github.com/lovesprit/Ajnabi-music",  # Tera repo agar hai to
+]
+
+# Check fork/clone
+UPSTREAM_REPO = os.getenv("UPSTREAM_REPO", CURRENT_REPO)
+if UPSTREAM_REPO not in ALLOWED_REPOS:
+    print("="*50)
+    print("❌ FORK/CLONE DETECTED!")
+    print="="*50)
+    print("This bot is protected by @lovesprit")
+    print("Forking/cloning is not allowed without permission.")
+    print("Contact: @lovesprit on Telegram")
+    print("="*50)
+    sys.exit(1)
+# ===========================================
+
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 OWNER_ID = int(os.getenv("OWNER_ID", None))
-OWNER_USERNAME = os.getenv("OWNER_USERNAME", "WTF_WhyMeeh")
-BOT_USERNAME = os.getenv("BOT_USERNAME", "ShrutixMusicBot")
+OWNER_USERNAME = os.getenv("OWNER_USERNAME", "@lovesprit")
+BOT_USERNAME = os.getenv("BOT_USERNAME", "AjnabiMusicBot")
 
 MONGO_DB_URI = os.getenv("MONGO_DB_URI", None)
 LOG_GROUP_ID = int(os.getenv("LOG_GROUP_ID", None))
-HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
-HEROKU_API_KEY = os.getenv("HEROKU_API_KEY")
 
-UPSTREAM_REPO = os.getenv("UPSTREAM_REPO", "https://github.com/NoxxOP/ShrutiMusic")
+# Heroku hata diya - Render safe
+HEROKU_APP_NAME = None
+HEROKU_API_KEY = None
+
 UPSTREAM_BRANCH = os.getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = os.getenv("GIT_TOKEN", None)
 
-SUPPORT_CHANNEL = os.getenv("SUPPORT_CHANNEL", "https://t.me/ShrutiBots")
-SUPPORT_GROUP = os.getenv("SUPPORT_GROUP", "https://t.me/ShrutiBotsSupport")
-INSTAGRAM = os.getenv("INSTAGRAM", "https://instagram.com/yaduwanshi_nand")
-YOUTUBE = os.getenv("YOUTUBE", "https://youtube.com/@NandEditz")
-GITHUB = os.getenv("GITHUB", "https://github.com/NoxxOP")
-DONATE = os.getenv("DONATE", "https://t.me/ShrutiBots/91")
-PRIVACY_LINK = os.getenv("PRIVACY_LINK", "https://graph.org/Privacy-Policy-05-01-30")
+# TERI CHIZEN
+SUPPORT_CHANNEL = os.getenv("SUPPORT_CHANNEL", "https://t.me/lovesprit")
+SUPPORT_GROUP = os.getenv("SUPPORT_GROUP", "https://t.me/lovesprit")
+INSTAGRAM = os.getenv("INSTAGRAM", "https://instagram.com/teri_id")
+YOUTUBE = os.getenv("YOUTUBE", "https://youtube.com/@teri_id")
+GITHUB = os.getenv("GITHUB", "https://github.com/lovesprit")
+DONATE = os.getenv("DONATE", "https://t.me/lovesprit")
+PRIVACY_LINK = os.getenv("PRIVACY_LINK", "https://t.me/lovesprit")
 
 DURATION_LIMIT_MIN = int(os.getenv("DURATION_LIMIT", 300))
 PLAYLIST_FETCH_LIMIT = int(os.getenv("PLAYLIST_FETCH_LIMIT", 25))
