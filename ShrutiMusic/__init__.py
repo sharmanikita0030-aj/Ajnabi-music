@@ -20,11 +20,13 @@
 # Email: badboy809075@gmail.com
 
 
-from ShrutiMusic.core.bot import Nand
-from ShrutiMusic.core.dir import dirr
-from ShrutiMusic.core.git import git
-from ShrutiMusic.core.userbot import Userbot
-from ShrutiMusic.misc import dbb, heroku
+# ↓↓↓ SIRF YE 6 LINES MEIN ShrutiMusic → AjnabiMusic KARNA HAI ↓↓↓
+
+from AjnabiMusic.core.bot import Nand          # Line 21: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.core.dir import dirr          # Line 22: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.core.git import git           # Line 23: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.core.userbot import Userbot   # Line 24: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.misc import dbb, heroku       # Line 25: ShrutiMusic → AjnabiMusic
 
 from .logging import LOGGER
 
@@ -52,9 +54,9 @@ YouTube = YouTubeAPI()
 
 # ===========================================
 # ©️ 2025 Nand Yaduwanshi (aka @NoxxOP)
-# 🔗 GitHub : https://github.com/NoxxOP/ShrutiMusic
-# 📢 Telegram Channel : https://t.me/ShrutiBots
+# 🔗 GitHub : https://github.com/NoxxOP/ShrutiMusic        # YAHAN KUCH MAT BADAL (original rahega)
+# 📢 Telegram Channel : https://t.me/ShrutiBots           # YAHAN KUCH MAT BADAL (original rahega)
 # ===========================================
 
 
-# ❤️ Love From ShrutiBots 
+# ❤️ Love From ShrutiBots
