@@ -1,1 +1,1 @@
-worker: bash start
+chmod +x start.sh
