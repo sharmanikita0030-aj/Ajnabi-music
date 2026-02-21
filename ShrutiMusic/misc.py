@@ -22,40 +22,23 @@
 
 import socket
 import time
+import os
 
-import heroku3
 from pyrogram import filters
 
 import config
-from ShrutiMusic.core.mongo import mongodb
+from AjnabiMusic.core.mongo import mongodb   # ShrutiMusic → AjnabiMusic
 
 from .logging import LOGGER
 
 SUDOERS = filters.user()
-
-HAPP = None
+HAPP = None   # Heroku ke liye tha, ab nahi use hoga
 _boot_ = time.time()
 
 
-def is_heroku():
-    return "heroku" in socket.getfqdn()
-
-
-XCB = [
-    "/",
-    "@",
-    ".",
-    "com",
-    ":",
-    "git",
-    "heroku",
-    "push",
-    str(config.HEROKU_API_KEY),
-    "https",
-    str(config.HEROKU_APP_NAME),
-    "HEAD",
-    "master",
-]
+def is_render():
+    """Check if running on Render"""
+    return "RENDER" in os.environ or "render" in socket.getfqdn()
 
 
 def dbb():
@@ -83,18 +66,15 @@ async def sudo():
     LOGGER(__name__).info(f"Sudoers Loaded.")
 
 
+# ⚠️ HEROKU PURE HATA DIYA - Render safe!
 def heroku():
-    global HAPP
-    if is_heroku:
-        if config.HEROKU_API_KEY and config.HEROKU_APP_NAME:
-            try:
-                Heroku = heroku3.from_key(config.HEROKU_API_KEY)
-                HAPP = Heroku.app(config.HEROKU_APP_NAME)
-                LOGGER(__name__).info(f"Heroku App Configured")
-            except BaseException:
-                LOGGER(__name__).warning(
-                    f"Please make sure your Heroku API Key and Your App name are configured correctly in the heroku."
-                )
+    """Heroku function disabled for Render safety"""
+    if is_render():
+        LOGGER(__name__).info(f"Running on Render - Heroku features disabled")
+        return
+    else:
+        LOGGER(__name__).info(f"Not on Render, but Heroku support removed for safety")
+        return
 
 
 # ©️ Copyright Reserved - @NoxxOP  Nand Yaduwanshi
@@ -106,4 +86,4 @@ def heroku():
 # ===========================================
 
 
-# ❤️ Love From ShrutiBots 
+# ❤️ Love From ShrutiBots
