@@ -26,13 +26,18 @@ from pyrogram import idle
 from pyrogram.types import BotCommand
 from pytgcalls.exceptions import NoActiveGroupCall
 import config
-from ShrutiMusic import LOGGER, app, userbot
-from ShrutiMusic.core.call import Nand
-from ShrutiMusic.misc import sudo
-from ShrutiMusic.plugins import ALL_MODULES
-from ShrutiMusic.utils.database import get_banned_users, get_gbanned
+
+# ↓↓↓ SIRF YE 7 LINES MEIN ShrutiMusic → AjnabiMusic KARNA HAI ↓↓↓
+
+from AjnabiMusic import LOGGER, app, userbot          # Line 28: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.core.call import Nand                # Line 29: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.misc import sudo                     # Line 30: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.plugins import ALL_MODULES           # Line 31: ShrutiMusic → AjnabiMusic
+from AjnabiMusic.utils.database import get_banned_users, get_gbanned  # Line 32: ShrutiMusic → AjnabiMusic
+
 from config import BANNED_USERS
 
+# COMMANDS LIST - YAHAN KUCH MAT BADAL (original rahne de)
 COMMANDS = [
     BotCommand("start", "❖ sᴛᴀʀᴛ ʙᴏᴛ • ᴛᴏ sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ"),
     BotCommand("help", "❖ ʜᴇʟᴘ ᴍᴇɴᴜ • ɢᴇᴛ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴀɴᴅ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"),
@@ -70,10 +75,10 @@ COMMANDS = [
 async def setup_bot_commands():
     try:
         await app.set_bot_commands(COMMANDS)
-        LOGGER("ShrutiMusic").info("Bot commands set successfully!")
+        LOGGER("AjnabiMusic").info("Bot commands set successfully!")          # ShrutiMusic → AjnabiMusic
         
     except Exception as e:
-        LOGGER("ShrutiMusic").error(f"Failed to set bot commands: {str(e)}")
+        LOGGER("AjnabiMusic").error(f"Failed to set bot commands: {str(e)}")  # ShrutiMusic → AjnabiMusic
 
 async def init():
     if (
@@ -103,9 +108,9 @@ async def init():
     await setup_bot_commands()
 
     for all_module in ALL_MODULES:
-        importlib.import_module("ShrutiMusic.plugins" + all_module)
+        importlib.import_module("AjnabiMusic.plugins" + all_module)           # ShrutiMusic → AjnabiMusic
 
-    LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
+    LOGGER("AjnabiMusic.plugins").info("Successfully Imported Modules...")    # ShrutiMusic → AjnabiMusic
 
     await userbot.start()
     await Nand.start()
@@ -113,7 +118,7 @@ async def init():
     try:
         await Nand.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("ShrutiMusic").error(
+        LOGGER("AjnabiMusic").error(                                           # ShrutiMusic → AjnabiMusic
             "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
         )
         exit()
@@ -122,7 +127,7 @@ async def init():
 
     await Nand.decorators()
 
-    LOGGER("ShrutiMusic").info(
+    LOGGER("AjnabiMusic").info(                                                # ShrutiMusic → AjnabiMusic
         "\x53\x68\x72\x75\x74\x69\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x53\x68\x72\x75\x74\x69\x42\x6f\x74\x73"
     )
 
@@ -130,7 +135,7 @@ async def init():
 
     await app.stop()
     await userbot.stop()
-    LOGGER("ShrutiMusic").info("Stopping Shruti Music Bot...🥺")
+    LOGGER("AjnabiMusic").info("Stopping Ajnabi Music Bot...🥺")               # ShrutiMusic → AjnabiMusic, "Shruti" → "Ajnabi"
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(init())
