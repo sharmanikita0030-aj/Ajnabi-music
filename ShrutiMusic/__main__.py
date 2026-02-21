@@ -22,22 +22,49 @@
 
 import asyncio
 import importlib
+import os
+import threading
+from flask import Flask, jsonify
 from pyrogram import idle
 from pyrogram.types import BotCommand
 from pytgcalls.exceptions import NoActiveGroupCall
 import config
 
-# ↓↓↓ SIRF YE 7 LINES MEIN ShrutiMusic → AjnabiMusic KARNA HAI ↓↓↓
+# ↓↓↓ RENDER KEEP ALIVE + FLASK + WEBHOOK ↓↓↓
+app_flask = Flask(__name__)
 
-from AjnabiMusic import LOGGER, app, userbot          # Line 28: ShrutiMusic → AjnabiMusic
-from AjnabiMusic.core.call import Nand                # Line 29: ShrutiMusic → AjnabiMusic
-from AjnabiMusic.misc import sudo                     # Line 30: ShrutiMusic → AjnabiMusic
-from AjnabiMusic.plugins import ALL_MODULES           # Line 31: ShrutiMusic → AjnabiMusic
-from AjnabiMusic.utils.database import get_banned_users, get_gbanned  # Line 32: ShrutiMusic → AjnabiMusic
+@app_flask.route('/')
+def home():
+    return jsonify({
+        "status": "alive",
+        "bot": "Ajnabi Music",
+        "message": "Bot is running on Render!"
+    })
 
+@app_flask.route('/health')
+def health():
+    return jsonify({"status": "healthy"}), 200
+
+@app_flask.route('/webhook', methods=['POST'])
+def webhook():
+    return jsonify({"status": "received"}), 200
+
+def run_flask():
+    port = int(os.environ.get("PORT", 8000))
+    app_flask.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+
+# Flask server ko background thread mein chalao
+threading.Thread(target=run_flask, daemon=True).start()
+# ↑↑↑ RENDER KEEP ALIVE END ↑↑↑
+
+
+from AjnabiMusic import LOGGER, app, userbot
+from AjnabiMusic.core.call import Nand
+from AjnabiMusic.misc import sudo
+from AjnabiMusic.plugins import ALL_MODULES
+from AjnabiMusic.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
 
-# COMMANDS LIST - YAHAN KUCH MAT BADAL (original rahne de)
 COMMANDS = [
     BotCommand("start", "❖ sᴛᴀʀᴛ ʙᴏᴛ • ᴛᴏ sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ"),
     BotCommand("help", "❖ ʜᴇʟᴘ ᴍᴇɴᴜ • ɢᴇᴛ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴀɴᴅ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"),
@@ -75,10 +102,10 @@ COMMANDS = [
 async def setup_bot_commands():
     try:
         await app.set_bot_commands(COMMANDS)
-        LOGGER("AjnabiMusic").info("Bot commands set successfully!")          # ShrutiMusic → AjnabiMusic
+        LOGGER("AjnabiMusic").info("Bot commands set successfully!")
         
     except Exception as e:
-        LOGGER("AjnabiMusic").error(f"Failed to set bot commands: {str(e)}")  # ShrutiMusic → AjnabiMusic
+        LOGGER("AjnabiMusic").error(f"Failed to set bot commands: {str(e)}")
 
 async def init():
     if (
@@ -108,9 +135,9 @@ async def init():
     await setup_bot_commands()
 
     for all_module in ALL_MODULES:
-        importlib.import_module("AjnabiMusic.plugins" + all_module)           # ShrutiMusic → AjnabiMusic
+        importlib.import_module("AjnabiMusic.plugins" + all_module)
 
-    LOGGER("AjnabiMusic.plugins").info("Successfully Imported Modules...")    # ShrutiMusic → AjnabiMusic
+    LOGGER("AjnabiMusic.plugins").info("Successfully Imported Modules...")
 
     await userbot.start()
     await Nand.start()
@@ -118,7 +145,7 @@ async def init():
     try:
         await Nand.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("AjnabiMusic").error(                                           # ShrutiMusic → AjnabiMusic
+        LOGGER("AjnabiMusic").error(
             "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
         )
         exit()
@@ -127,7 +154,7 @@ async def init():
 
     await Nand.decorators()
 
-    LOGGER("AjnabiMusic").info(                                                # ShrutiMusic → AjnabiMusic
+    LOGGER("AjnabiMusic").info(
         "\x53\x68\x72\x75\x74\x69\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x53\x68\x72\x75\x74\x69\x42\x6f\x74\x73"
     )
 
@@ -135,10 +162,16 @@ async def init():
 
     await app.stop()
     await userbot.stop()
-    LOGGER("AjnabiMusic").info("Stopping Ajnabi Music Bot...🥺")               # ShrutiMusic → AjnabiMusic, "Shruti" → "Ajnabi"
+    LOGGER("AjnabiMusic").info("Stopping Ajnabi Music Bot...🥺")
 
 if __name__ == "__main__":
-    asyncio.get_event_loop().run_until_complete(init())
+    # ✅ RENDER FIX - YEH TARIKA SAHI KAAM KAREGA
+    try:
+        asyncio.run(init())
+    except KeyboardInterrupt:
+        LOGGER("AjnabiMusic").info("Bot stopped by user")
+    except Exception as e:
+        LOGGER("AjnabiMusic").error(f"Fatal error: {e}")
 
 
 # ©️ Copyright Reserved - @NoxxOP  Nand Yaduwanshi
