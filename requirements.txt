@@ -8,7 +8,8 @@ dnspython
 ffmpeg-python
 gitpython
 hachoir
-heroku3
+flask==2.3.3
+gunicorn==21.2.0
 httpx
 motor
 numpy
@@ -36,4 +37,5 @@ yt-dlp
 # 🔗 GitHub : https://github.com/NoxxOP/ShrutiMusic
 # 📢 Telegram Channel : https://t.me/ShrutiBots
 # ===========================================
+
 
